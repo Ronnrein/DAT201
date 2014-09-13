@@ -125,6 +125,24 @@ public class DoubleList<E extends Comparable<E>> implements Iterable<DoubleNode<
         return lowest;
     }
     
+    public DoubleNode<E> highestValue(){
+        DoubleNode<E> highest = head.getNext();
+        for(DoubleNode<E> node : this){
+            if(node.getValue().compareTo(highest.getValue()) > 0){
+                highest = node;
+            }
+        }
+        return highest;
+    }
+    
+    public E getFirst(){
+        return head.getNext().getValue();
+    }
+    
+    public E getLast(){
+        return tail.getPrev().getValue();
+    }
+    
     public int size(){
         return size;
     }
