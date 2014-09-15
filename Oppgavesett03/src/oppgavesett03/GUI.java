@@ -39,9 +39,11 @@ public class GUI implements MouseListener{
     DefaultTableModel waitingTableModel = new DefaultTableModel(columns2, 0);
     
     DoubleList<Customer> customers = new DoubleList<>();
-    
+
+    /**
+     * Initialize the GUI
+     */
     public GUI(){
-        
         File file = new File(FILENAME);
         if(!file.exists() || file.isDirectory()){
             saveCustomers();
@@ -114,7 +116,11 @@ public class GUI implements MouseListener{
         f.setLocationRelativeTo(null);
         f.setVisible(true);
     }
-    
+
+    /**
+     * Get the next customer to be served, if none, returns null
+     * @return The next customer to be served
+     */
     private Customer getNextToServe(){
         if(customers.size() < 0){
             return null;
@@ -136,7 +142,10 @@ public class GUI implements MouseListener{
         }
         return current;
     }
-    
+
+    /**
+     * Update the GUI tables with data from the list
+     */
     private void updateTables(){
         if(customers.size() > 0){
             currentTableModel.setRowCount(0);
@@ -157,7 +166,10 @@ public class GUI implements MouseListener{
             }
         }   
     }
-    
+
+    /**
+     * Load customer data from the serialized file
+     */
     private void loadCustomers(){
         try{
             FileInputStream fileIn = new FileInputStream(FILENAME);
@@ -172,7 +184,10 @@ public class GUI implements MouseListener{
             e.printStackTrace();
         }
     }
-    
+
+    /**
+     * Save customer data to the serialized file
+     */
     private void saveCustomers(){
         try{
             FileOutputStream fileOut = new FileOutputStream(FILENAME);
@@ -184,12 +199,19 @@ public class GUI implements MouseListener{
             e.printStackTrace();
         }
     }
-    
+
+    /**
+     * This method gets called every second
+     */
     private void tick(){
         loadCustomers();
         updateTables();
     }
 
+    /**
+     * Fired off when a listened to component gets clicked
+     * @param e The mouse event
+     */
     @Override
     public void mouseClicked(MouseEvent e) {
         switch(((JButton)e.getComponent()).getActionCommand()){

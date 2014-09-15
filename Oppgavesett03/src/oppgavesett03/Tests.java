@@ -1,11 +1,15 @@
 package oppgavesett03;
 
 /**
- *
- * @author Ronnrein
+ * This class contains tests that will be performed on the list
+ * @author Ronny Reinhardtsen
  */
 public class Tests {
-    
+
+    /**
+     * Perform a test using integers
+     * @return The test results
+     */
     public static String runIntTest(){
         String result = "";
         
@@ -39,7 +43,11 @@ public class Tests {
         
         return result;
     }
-    
+
+    /**
+     * Perform a test using string
+     * @return The test result
+     */
     public static String runStringTest(){
         String result = "";
         

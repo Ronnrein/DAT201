@@ -13,7 +13,10 @@ public class DoubleList<E extends Comparable<E>> implements Iterable<E>, Seriali
     private DoubleNode<E> head;
     private DoubleNode<E> tail;
     private int size;
-    
+
+    /**
+     * Constructor
+     */
     public DoubleList(){
         head = new DoubleNode<>(null);
         tail = new DoubleNode<>(null);
@@ -37,7 +40,12 @@ public class DoubleList<E extends Comparable<E>> implements Iterable<E>, Seriali
     public void addLast(E value){
         addBefore(tail, value);
     }
-    
+
+    /**
+     * Add an item after the supplied node
+     * @param node The node to add after
+     * @param value The value to add
+     */
     private void addAfter(DoubleNode<E> node, E value){
         if(node == tail){
             throw new IllegalArgumentException("Cannot add node after tail");
@@ -49,7 +57,12 @@ public class DoubleList<E extends Comparable<E>> implements Iterable<E>, Seriali
         n.setPrev(node);
         size++;
     }
-    
+
+    /**
+     * Add an item before the supplied node
+     * @param node The node to add before
+     * @param value The value to add
+     */
     private void addBefore(DoubleNode<E> node, E value){
         if(node == head){
             throw new IllegalArgumentException("Cannot add node before head");
@@ -164,7 +177,12 @@ public class DoubleList<E extends Comparable<E>> implements Iterable<E>, Seriali
     public int size(){
         return size;
     }
-    
+
+    /**
+     * Remove the supplied node
+     * @param n The node to be removed
+     * @return Whether node was removed (If it returns false, the node does not exist in the list)
+     */
     private boolean removeNode(DoubleNode<E> n){
         if(contains(n)){
             n.getPrev().setNext(n.getNext());
@@ -176,6 +194,11 @@ public class DoubleList<E extends Comparable<E>> implements Iterable<E>, Seriali
         return false;
     }
 
+    /**
+     * Checks if supplied node exists in this list
+     * @param n The node to be checked
+     * @return Whether the node exists in the list or not
+     */
     private boolean contains(DoubleNode<E> n){
         Iterator<DoubleNode<E>> i = nodeIterator();
         while(i.hasNext()){
@@ -185,7 +208,11 @@ public class DoubleList<E extends Comparable<E>> implements Iterable<E>, Seriali
         }
         return false;
     }
-    
+
+    /**
+     * Get the node with the lowest value in the list
+     * @return The node with the lowest item value
+     */
     private DoubleNode<E> lowest(){
         DoubleNode<E> lowest = head.getNext();
         Iterator<DoubleNode<E>> i = nodeIterator();
@@ -197,7 +224,11 @@ public class DoubleList<E extends Comparable<E>> implements Iterable<E>, Seriali
         }
         return lowest;
     }
-    
+
+    /**
+     * Get the node with the highest value in the list
+     * @return The node with the highest item value
+     */
     private DoubleNode<E> highest(){
         DoubleNode<E> highest = head.getNext();
         Iterator<DoubleNode<E>> i = nodeIterator();
@@ -209,7 +240,11 @@ public class DoubleList<E extends Comparable<E>> implements Iterable<E>, Seriali
         }
         return highest;
     }
-    
+
+    /**
+     * Returns the content of the list as a formatted string
+     * @return
+     */
     @Override
     public String toString(){
         String result = size+" items: {";
@@ -223,6 +258,10 @@ public class DoubleList<E extends Comparable<E>> implements Iterable<E>, Seriali
         return result;
     }
 
+    /**
+     * Private iterator, used to loop through nodes, not items
+     * @return
+     */
     private Iterator<DoubleNode<E>> nodeIterator() {
         Iterator<DoubleNode<E>> i = new Iterator<DoubleNode<E>>(){
             private DoubleNode<E> current = head.getNext();
@@ -250,6 +289,10 @@ public class DoubleList<E extends Comparable<E>> implements Iterable<E>, Seriali
         return i;
     }
 
+    /**
+     * Public iterator, used to loop through items, not nodes
+     * @return
+     */
     @Override
     public Iterator<E> iterator() {
         Iterator<E> i = new Iterator<E>(){
@@ -281,8 +324,8 @@ public class DoubleList<E extends Comparable<E>> implements Iterable<E>, Seriali
 }
 
 /**
- *
- * @author Ronnrein
+ * The node class used in the list
+ * @author Ronny Reinhardtsen
  * @param <E> Type to be stored
  */
 class DoubleNode<E extends Comparable<E>> implements Serializable {
@@ -290,31 +333,59 @@ class DoubleNode<E extends Comparable<E>> implements Serializable {
     private E value;
     private DoubleNode<E> prev;
     private DoubleNode<E> next;
-    
+
+    /**
+     * The constructor
+     * @param value The value to be set for this node
+     */
     public DoubleNode(E value){
         this.value = value;
     }
 
+    /**
+     * Get the value of this node
+     * @return The value/item;
+     */
     public E getValue() {
         return value;
     }
 
+    /**
+     * Set the value of this node
+     * @param value The value/item
+     */
     public void setValue(E value) {
         this.value = value;
     }
 
+    /**
+     * Get the node before this node
+     * @return The previous node
+     */
     public DoubleNode<E> getPrev() {
         return prev;
     }
 
+    /**
+     * Set which node is after this node
+     * @param prev The new previous node
+     */
     public void setPrev(DoubleNode<E> prev) {
         this.prev = prev;
     }
 
+    /**
+     * Get the node after this node
+     * @return The next node
+     */
     public DoubleNode<E> getNext() {
         return next;
     }
 
+    /**
+     * Set which node is before this node
+     * @param next The new next node
+     */
     public void setNext(DoubleNode<E> next) {
         this.next = next;
     }

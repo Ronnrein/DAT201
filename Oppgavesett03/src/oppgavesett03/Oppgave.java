@@ -1,8 +1,8 @@
 package oppgavesett03;
 
 /**
- *
- * @author Ronnrein
+ * The main part of the program
+ * @author Ronny Reinhardtsen
  */
 public class Oppgave {
 
@@ -16,9 +16,7 @@ public class Oppgave {
         GUI gui = new GUI();
         
     }
-    
-    
-    
+
     public static void main(String[] args) {
         Oppgave o = new Oppgave();
     }
