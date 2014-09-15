@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import javax.swing.*;
@@ -115,10 +116,22 @@ public class GUI implements MouseListener{
     }
     
     private Customer getNextToServe(){
+        if(customers.size() < 0){
+            return null;
+        }
         Customer current = null;
-        for(DoubleNode<Customer> i : customers){
-            if(current == null || (i.getValue().status == CustomerStatus.WAITING && i.getValue().ticket < current.ticket)){
-                current = i.getValue();
+        for(Customer i : customers){
+            if(i.status == CustomerStatus.WAITING){
+                current = i;
+                break;
+            }
+        }
+        if(current == null){
+            return null;
+        }
+        for(Customer i : customers){
+            if(i.status == CustomerStatus.WAITING && i.ticket < current.ticket){
+                current = i;
             }
         }
         return current;
@@ -128,16 +141,16 @@ public class GUI implements MouseListener{
         if(customers.size() > 0){
             currentTableModel.setRowCount(0);
             waitingTableModel.setRowCount(0);
-            for(DoubleNode<Customer> i : customers){
-                switch(i.getValue().status){
+            for(Customer i : customers){
+                switch(i.status){
                     case WAITING:
                         Date now = new Date();
-                        long diff = now.getTime() - i.getValue().arrival.getTime();
-                        Object[] row1 = {i.getValue().ticket, TimeUnit.MILLISECONDS.toMinutes(diff)+" minutter, "+TimeUnit.MILLISECONDS.toSeconds(diff)+" sekunder"};
+                        long diff = now.getTime() - i.arrival.getTime();
+                        Object[] row1 = {i.ticket, TimeUnit.MILLISECONDS.toMinutes(diff)+" minutter, "+TimeUnit.MILLISECONDS.toSeconds(diff)+" sekunder"};
                         waitingTableModel.addRow(row1);
                         break;
                     case CURRENT:
-                        Object[] row2 = {i.getValue().ticket, i.getValue().clerk};
+                        Object[] row2 = {i.ticket, i.clerk};
                         currentTableModel.addRow(row2);
                         break;
                 }
@@ -151,7 +164,7 @@ public class GUI implements MouseListener{
             ObjectInputStream in = new ObjectInputStream(fileIn);
             customers = (DoubleList<Customer>) in.readObject();
             if(customers.size() > 0){
-                currentTicket = customers.highestValue().getValue().ticket;
+                currentTicket = customers.highestValue().ticket;
             }
             in.close();
             fileIn.close();
@@ -185,9 +198,11 @@ public class GUI implements MouseListener{
                 if(currentCustomer == null){
                     break;
                 }
-                for(DoubleNode<Customer> i : customers){
-                    if(i.getValue().status == CustomerStatus.CURRENT && i.getValue().clerk.equals(name.getText())){
-                        customers.remove(i);
+                Iterator<Customer> i = customers.iterator();
+                while(i.hasNext()){
+                    Customer current = i.next();
+                    if(current.status == CustomerStatus.CURRENT && current.clerk.equals(name.getText())){
+                        i.remove();
                     }
                 }
                 Date now = new Date();
